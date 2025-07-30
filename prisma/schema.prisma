@@ -41,7 +41,7 @@ model Food {
   MealFood         MealFood[]
 }
 
-// Define unidades de medida genérica
+// Define unidades de medida genérica (gramos, litros, cucharadas, etc.)
 model ServingUnit {
   id              Int               @id @default(autoincrement())
   name            String            @unique
@@ -53,6 +53,8 @@ model ServingUnit {
   MealFood        MealFood[]
 }
 
+// El modelo FoodServingUnit conecta un Food específico con una ServingUnit específica 
+// y le asigna un valor en gramos.
 model FoodServingUnit {
   id            Int         @id @default(autoincrement())
   food          Food        @relation(fields: [foodId], references: [id])
@@ -80,7 +82,7 @@ enum Role {
   ADMIN
 }
 
-// Comida individual en un momento específico
+// Comida individual en un momento específico (desayuno, cena, etc.)
 model Meal {
   id        Int        @id @default(autoincrement())
   dateTime  DateTime
@@ -101,7 +103,7 @@ model MealFood {
   mealId        Int
   amount        Float
   servingUnit   ServingUnit @relation(fields: [servingUnitId], references: [id])
+  servingUnitId Int
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  servingUnitId Int
 }
