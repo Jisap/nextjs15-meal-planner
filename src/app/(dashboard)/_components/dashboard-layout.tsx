@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import * as  Collapsible  from '@radix-ui/react-collapsible';
+import * as  Collapsible from '@radix-ui/react-collapsible';
 import { Apple, Boxes, ChevronDown, ChevronLeft, LogOut, Menu, Ruler, Utensils } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import React, { ReactNode, useState } from 'react';
@@ -10,6 +10,7 @@ import { motion } from "motion/react";
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 type RouteGroupType = {
   group: string;
@@ -56,16 +57,16 @@ const ROUTE_GROUPS: RouteGroupType[] = [
 type RouteGroupProps = RouteGroupType
 
 const RouteGroup = ({ group, items }: RouteGroupProps) => {
-  
+
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  
+
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>
       <Collapsible.Trigger asChild>
-        <Button 
+        <Button
           className='text-foreground/80 flex justify-between w-full font-normal'
-          variant="ghost"  
+          variant="ghost"
         >
           {group}
           <div className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>
@@ -88,17 +89,17 @@ const RouteGroup = ({ group, items }: RouteGroupProps) => {
               asChild
               key={item.href}
             >
-              <Link 
-                href={item.href} 
+              <Link
+                href={item.href}
                 className={`flex items-center rounded-md px-5 py-1 transition-all
                   ${pathname === item.href
                     ? "bg-background/10 hover:bg-foreground/5"
-                    : "hover:bg-foreground/10"  
+                    : "hover:bg-foreground/10"
                   }  
                 `}
-                >
-                  {item.icon}
-                  <span className='text-sm'>{item.label}</span>
+              >
+                {item.icon}
+                <span className='text-sm'>{item.label}</span>
               </Link>
             </Button>
           ))}
@@ -109,85 +110,91 @@ const RouteGroup = ({ group, items }: RouteGroupProps) => {
 }
 
 
-type DashboardlayoutProps ={
+type DashboardlayoutProps = {
   children: React.ReactNode
 }
 
-const Dashboardlayout = ({children}: DashboardlayoutProps) => {
+const Dashboardlayout = ({ children }: DashboardlayoutProps) => {
 
-  const[open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
-    <div className='bg-background fixed z-10 flex h-13 w-screen items-center justify-between border px-2'>
-      <Collapsible.Root open={open} onOpenChange={setOpen} className='h-full'>
-        <Collapsible.Trigger asChild className='m-2'>
-          <Button
-            size="icon"
-            variant="outline"
-          >
-            <Menu />
-          </Button>
-        </Collapsible.Trigger>
-      </Collapsible.Root>
-
-      {/* themeToggle */}
-      <div className='flex'>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+    <div className='flex'>
+      {/* Button Menu - Theme Toggle - User Menu */}
+      <div className='bg-background fixed z-10 flex h-13 w-screen items-center justify-between border px-2'>
+        <Collapsible.Root open={open} onOpenChange={setOpen} className='h-full'>
+          <Collapsible.Trigger asChild className='m-2'>
             <Button
-              variant="ghost"
-              className='flex h-9 items-center gap-2 px-2'
+              size="icon"
+              variant="outline"
             >
-              <Avatar className='size-8'>
-                <AvatarFallback>A</AvatarFallback>
-              </Avatar>
-              <span className='hidden md:inline'>
-                Admin
-              </span>
+              <Menu />
             </Button>
-          </DropdownMenuTrigger>
+          </Collapsible.Trigger>
+        </Collapsible.Root>
 
-          <DropdownMenuContent 
-            align="end"
-            className='w-48 p-2'
-          >
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            
-            <DropdownMenuSeparator />
+        <div className='flex'>
+          {/* themeToggle */}
+          <ThemeToggle />
+          {/* userMenu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className='flex h-9 items-center gap-2 px-2'
+              >
+                <Avatar className='size-8'>
+                  <AvatarFallback>A</AvatarFallback>
+                </Avatar>
+                <span className='hidden md:inline'>
+                  Admin
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
 
-            <div className='flex items-center gap-3 px-2 py-1.5'>
-              <Avatar className='size-8'>
-                <AvatarFallback>A</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className='text-sm font-medium'>Admin</p>
-                <p className='text-muted-foreground text-xs'>Admin@test.com</p>
-              </div>
-            </div>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem
-              onClick={() => {}}
-              variant="destructive"
+            <DropdownMenuContent
+              align="end"
+              className='w-48 p-2'
             >
-              <LogOut  className='size-4'/> Logout
-            </DropdownMenuItem>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
 
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuSeparator />
+
+              <div className='flex items-center gap-3 px-2 py-1.5'>
+                <Avatar className='size-8'>
+                  <AvatarFallback>A</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className='text-sm font-medium'>Admin</p>
+                  <p className='text-muted-foreground text-xs'>Admin@test.com</p>
+                </div>
+              </div>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={() => { }}
+                variant="destructive"
+              >
+                <LogOut className='size-4' /> Logout
+              </DropdownMenuItem>
+
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
-      <Collapsible.Root 
-        open={open} 
+      {/* Collapsible Menu */} 
+      <Collapsible.Root
+        open={open}
         onOpenChange={setOpen}
-        className='fixed top-0 left-0 z-20 h-dvh'  
+        className='fixed top-0 left-0 z-20 h-dvh'
       >
         <Collapsible.Content forceMount>
           <div className={
             `bg-background fixed top-0 left-0 h-screen w-64 border p-4 transition-transform duration-300
-            ${open ? 'translate-x-0' : '-translate-x-full'}
-            `
+              ${open ? 'translate-x-0' : '-translate-x-full'}
+              `
           }>
             <div className='flex items-center justify-between'>
               <h1 className='font-semibold'>
@@ -204,10 +211,10 @@ const Dashboardlayout = ({children}: DashboardlayoutProps) => {
             </div>
 
             <Separator className='my-2' />
-            
+
             <div className='mt-4'>
               {ROUTE_GROUPS.map((routeGroup) => (
-                <RouteGroup 
+                <RouteGroup
                   {...routeGroup}
                   key={routeGroup.group}
                 />
@@ -220,6 +227,7 @@ const Dashboardlayout = ({children}: DashboardlayoutProps) => {
       <main className={`transition-margin mt-13 flex-1 p-4 duration-300 ${open ? 'ml-64' : 'ml-0'}`}>
         {children}
       </main>
+
     </div>
   )
 }
