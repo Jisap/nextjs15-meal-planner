@@ -84,14 +84,14 @@ const RouteGroup = ({ group, items }: RouteGroupProps) => {
         >
           {items.map((item) => (
             <Button
-              className='w-full justify-start font-normal'
+              className='w-full justify-start font-semibold text-green-700'
               variant="link"
               asChild
               key={item.href}
             >
               <Link
                 href={item.href}
-                className={`flex items-center rounded-md px-5 py-1 transition-all
+                className={`flex items-center rounded-md px-5 py-1 transition-all 
                   ${pathname === item.href
                     ? "bg-background/10 hover:bg-foreground/5"
                     : "hover:bg-foreground/10"
@@ -224,6 +224,7 @@ const Dashboardlayout = ({ children }: DashboardlayoutProps) => {
         </Collapsible.Content>
       </Collapsible.Root>
 
+      {/* Main Content - children*/}
       <main className={`transition-margin mt-13 flex-1 p-4 duration-300 ${open ? 'ml-64' : 'ml-0'}`}>
         {children}
       </main>
