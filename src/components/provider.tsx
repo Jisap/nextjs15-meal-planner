@@ -35,8 +35,8 @@ const Providers = ({ children }: ProvidersProps) => {
         enableSystem
         disableTransitionOnChange
       > 
-        {children}
         <Toaster />
+        {children}
       </NextThemesProvider>
     </QueryClientProvider>
   )

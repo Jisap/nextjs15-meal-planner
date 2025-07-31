@@ -1,8 +1,9 @@
 import React from 'react'
+import CategoryCards from './_components/category-cards'
 
 const Page = () => {
   return (
-    <div>Categories</div>
+    <CategoryCards />
   )
 }
 
