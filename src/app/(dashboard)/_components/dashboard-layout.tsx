@@ -139,7 +139,7 @@ const Dashboardlayout = ({children}: DashboardlayoutProps) => {
             ${open ? 'translate-x-0' : '-translate-x-full'}
             `
           }>
-            <div className='flex items-center justify-center'>
+            <div className='flex items-center justify-between'>
               <h1 className='font-semibold'>
                 Admin Dashboard
               </h1>
@@ -152,7 +152,9 @@ const Dashboardlayout = ({children}: DashboardlayoutProps) => {
                 </Button>
               </Collapsible.Trigger>
             </div>
+
             <Separator className='my-2' />
+            
             <div className='mt-4'>
               {ROUTE_GROUPS.map((routeGroup) => (
                 <RouteGroup 
