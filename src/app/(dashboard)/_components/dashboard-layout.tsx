@@ -11,6 +11,10 @@ import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { z } from 'zod';
+import { customErrorMap } from '@/lib/customErrorMap';
+
+z.config({ customError: customErrorMap }); // Configuración de Zod para mostrar mensajes de error personalizados de CustomErrorMap
 
 type RouteGroupType = {
   group: string;
