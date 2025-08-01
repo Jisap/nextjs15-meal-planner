@@ -26,11 +26,13 @@ type Actions = {                                           // Define las funcion
 type Store = State & Actions;                              // `Store` es la unión de `State` y `Actions`, representando la estructura completa del store
 
 // El propósito de `useGlobalStore` es gestionar el estado de un diálogo de alerta genérico.
-// En lugar de que cada componente tenga su propia lógica para mostrar una alerta, este store centraliza todo.
+// En lugar de que cada componente tenga su propia lógica para mostrar una alerta,
+// este store centraliza todo.
 
 // `createStore` es una función que crea nuestro store. Recibe dos argumentos:
 // 1. Una "función creadora" que define el estado inicial y las acciones.
 // 2. Un objeto de configuración opcional (en este caso, para la persistencia).
+
 const useGlobalStore = createStore<Store>(
   // Argumento 1: La función creadora.
   // Recibe como parámetro la función `set`, que nos permite actualizar el estado de forma segura.
@@ -57,15 +59,15 @@ const useGlobalStore = createStore<Store>(
   }),
   // Argumento 2: Objeto de configuración para el store.
   {
-    name: "global-store", // Nombre para la persistencia (ej. en localStorage).
-    // `excludeFromPersist` evita que `alertOpen` se guarde, para que la alerta no reaparezca al recargar la página.
-    excludeFromPersist: ["alertOpen"],
+    name: "global-store",                                 // Nombre para la persistencia (ej. en localStorage). 
+    excludeFromPersist: ["alertOpen"],                    // `excludeFromPersist` evita que `alertOpen` se guarde, para que la alerta no reaparezca al recargar la página. 
   }
 );
 
 // Esta es una función "helper" que nos permite mostrar una alerta desde cualquier parte
 // de la aplicación sin necesidad de usar el hook `useGlobalStore` directamente.
-const alert = (config: AlertConfig) => {
+// Permite llamar a la función alert(config) sin importar el contexto
+const alert = (config: AlertConfig) => {                 
   useGlobalStore.getState().showAlert(config);
 };
 
