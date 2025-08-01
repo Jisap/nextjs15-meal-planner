@@ -20,4 +20,4 @@ const categoryDefaultValues: CategorySchema = {                          // Valo
   name: "",
 };
 
-export { categorySchema, categoryDefaultValues, type CategorySchema };
+export { categorySchema, categoryDefaultValues, type CategorySchema };   
