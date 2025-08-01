@@ -18,7 +18,7 @@ type State = {                                             // Define la "forma" 
 
 
 type Actions = {                                           // Define las funciones (acciones) que pueden modificar el estado. 
-  updateAlertOpen: (is: State["alertOpen"]) => void;
+  updateAlertOpen: (is: State["alertOpen"]) => void;       // Aquí se define que 'is' debe ser del mismo tipo que State["alertOpen"], es decir, un booleano.
   showAlert: (config: AlertConfig) => void;
 };
 
@@ -43,7 +43,7 @@ const useGlobalStore = createStore<Store>(
 
     // --- ACCIONES ---
     // `updateAlertOpen` es una acción para abrir o cerrar la alerta.
-    updateAlertOpen: (is) =>
+    updateAlertOpen: (is) => // `is` es el nuevo valor booleano para `alertOpen` (true para abrir, false para cerrar).
       set((state) => {
         state.alertOpen = is;
         // Si la alerta se cierra, también limpiamos su configuración.

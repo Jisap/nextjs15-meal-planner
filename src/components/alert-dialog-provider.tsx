@@ -51,7 +51,10 @@ const AlertDialogProvider = () => {
 
   return (
     // El componente AlertDialog de Radix/shadcn se controla mediante el estado del store.
-    <AlertDialog open={alertOpen} onOpenChange={updateAlertOpen}>
+    <AlertDialog 
+      open={alertOpen} 
+      onOpenChange={updateAlertOpen}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
           {/* Usa los textos de la configuración o valores por defecto. */}
