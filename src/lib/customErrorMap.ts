@@ -1,7 +1,9 @@
-import { z, ZodErrorMap } from "zod";
+import { z } from "zod";
 
 const customErrorMap = (((issue: z.core.$ZodIssue, ctx: { defaultError: string }) => {
+  
   switch (issue.code) {
+    
     case "invalid_type":
       if (
         "received" in issue &&
@@ -54,6 +56,6 @@ const customErrorMap = (((issue: z.core.$ZodIssue, ctx: { defaultError: string }
     default:
       return { message: ctx.defaultError };
   }
-}) as unknown) as ZodErrorMap;
+}) as unknown) as z.ZodErrorMap;
 
 export { customErrorMap };
