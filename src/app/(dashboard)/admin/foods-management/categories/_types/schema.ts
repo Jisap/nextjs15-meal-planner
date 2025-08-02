@@ -5,7 +5,7 @@ import { z } from "zod";
 
 const categorySchema = z.intersection(                                   // Los datos son válidos si cumplen las condiciones de ambos objetos
   z.object({
-    name: z.string().min(1).max(255),                                    // name es requerido y debe tener entre 1 y 255 caracteres
+    name: z.string().min(3).max(255),                                    // name es requerido y debe tener entre 1 y 255 caracteres
   }),
   z.discriminatedUnion("action", [                                       // y el campo action debe ser "create" o "update"
     z.object({ action: z.literal("create") }),

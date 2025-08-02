@@ -6,11 +6,16 @@ import { useDeleteCategory } from '../_services/use-category-mutations';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash } from 'lucide-react';
 import { alert } from '@/lib/use-global-store';
+import { useCategoriesStore } from '../_libs/useCategoriesStore';
+
 
 const CategoryCards = () => {
 
+  const { updateSelectedCategoryId, updateCategoryDialogOpen } = useCategoriesStore(); // Estado de CategoriesStore
+
   const categoriesQuery = useCategories();              // Query para obtener los datos de las categorías
   const deleteCategoryMutation = useDeleteCategory();   // Mutación para eliminar una categoría
+
 
 
   return (
@@ -21,7 +26,15 @@ const CategoryCards = () => {
             {item.name}
           </p>
           <div className='flex gap-1'>
-            <Button className='size-6' variant="ghost" size="icon" onClick={() => {}}>
+            <Button 
+              className='size-6' 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => {
+                updateSelectedCategoryId(item.id);  // Establece el ID de la categoría seleccionada
+                updateCategoryDialogOpen(true);     // Abre el dialogo de edición de categoría <CategoryFormDialog /> -> permite cambiar el nombre de la categoría
+              }}
+            >
               <Edit />
             </Button>
             <Button 

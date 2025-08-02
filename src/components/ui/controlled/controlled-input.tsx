@@ -53,7 +53,7 @@ const ControlledInput = <T extends FieldValues>({
               {...props}                                    // Pasa el resto de las props de <input> (como placeholder) al componente <Input>.
             />
             {!!error && (
-              <p className="text-destructive text-sm">{error.message}</p>
+              <p className="text-destructive text-sm mt-1">{error.message}</p>
             )}
           </>
         )}
