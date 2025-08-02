@@ -33,7 +33,7 @@ const ControlledInput = <T extends FieldValues>({
         </Label>
       )}
 
-      {/* Este es el componente principal de react-hook-form para integrar componentes de UI controlados */}
+      {/* Este es el componente principal de react-hook-form para integrar componentes de UI controlados como shadcn */}
       <Controller
         name={name}                                        // Le dice a Controller a que campo del formulario debe suscribirse
         control={control}                                  // Le pasa el objeto control que obtuvimos del contexto
