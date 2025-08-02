@@ -87,16 +87,16 @@ const Button = ({
   // Decide si renderizar un button o un Slot 
   // <Slot> es un componente (padre) que fusiona sus props con las de su hijo inmediato, 
   // en lugar de renderizar un nuevo elemento en el DOM.
-  const Comp = asChild ? Slot : "button"; // Si aschild es true -> Slot -> Fusiona las props del button con las del componente que le pases como hijo
+  const Comp = asChild ? Slot : "button";     // Si aschild es true -> Slot -> Fusiona las props del button con las del componente que le pases como hijo
 
-  const renderBadge = () => {             // Si en las props badge es true se renderiza             
+  const renderBadge = () => {                 // Si en las props badge es true se renderiza             
     if (!badge) return null;
     return (
       <span className={cn(badgeVariants({ variant: badgeVariant, size }))} />
     );
   };
 
-  const content = (                         // Define el contenido del botón
+  const content = (                            // Define el contenido del botón
     <>
       {isLoading ? (
         <>
@@ -110,10 +110,11 @@ const Button = ({
     </>
   );
 
-  if (asChild) {
-    return <Comp {...props}>{content}</Comp>;
+  if (asChild) {                               // Si se renderiza un componente hijo
+    return <Comp {...props}>{content}</Comp>;  // Se pasa el contenido como hijo
   }
 
+  // Finalmente se renderiza el Comp como un Slot o un button
   return (
     <Comp
       data-slot="button"

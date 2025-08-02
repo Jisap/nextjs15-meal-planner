@@ -1,7 +1,6 @@
 "use client"
 
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Category } from '../../../../../../../generated/prisma/index';
 import { categoryDefaultValues, categorySchema, CategorySchema } from '../_types/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCategoriesStore } from '../_libs/useCategoriesStore';
@@ -16,15 +15,15 @@ import { ControlledInput } from '@/components/ui/controlled/controlled-input';
 
 
 interface CategoryFormDialogProps {
-  smallTrigger?: boolean;
+  smallTrigger?: boolean;  // Si se pasa true se renderiza un botón de icono en lugar de un botón de texto
 }
 
 
 
-const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => {
+export const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => {
 
-  const form = useForm<CategorySchema>({
-    defaultValues: categoryDefaultValues, // name: "", action: "create"
+  const form = useForm<CategorySchema>({   // Formulario de creación y actualización de categorías
+    defaultValues: categoryDefaultValues,  // name: "", action: "create"
     resolver: zodResolver(categorySchema), // Validación de datos
   });
 
@@ -79,7 +78,10 @@ const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => {
 
 
   return (
-    <Dialog open={categoryDialogOpen} onOpenChange={handleDialogOpenChange}>
+    <Dialog 
+      open={categoryDialogOpen} 
+      onOpenChange={handleDialogOpenChange}
+    >
       <DialogTrigger asChild>
         {smallTrigger ? (
           <Button size="icon" variant="ghost" type="button">
@@ -92,13 +94,24 @@ const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => {
           </Button>
         )}
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-2xl">
             {selectedCategoryId ? "Edit Category" : "Create a New Category"}
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
+        <form 
+          onSubmit={form.handleSubmit(onSubmit)} 
+          className="space-y-6"
+        >
+          {/* 
+            Se usa el FormProvider para pasar implícitamente todos 
+            los métodos (handleSubmit y control) 
+            y el estado del formulario (values, errors, isDirty, touchedFields)
+            a componentes anidados, como el <ControlledInput />
+          */}
           <FormProvider {...form}>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
@@ -110,6 +123,7 @@ const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => {
               </div>
             </div>
           </FormProvider>
+
           <DialogFooter>
             <Button 
               type="submit" 
@@ -119,6 +133,7 @@ const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => {
             </Button>
           </DialogFooter>
         </form>
+
       </DialogContent>
     </Dialog>
   );
