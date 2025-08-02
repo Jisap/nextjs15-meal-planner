@@ -47,7 +47,7 @@ export const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => 
   
   useEffect(() => {                                                          // Si se selecciona una categoría y se carga la query de categorías -> resetea el form
     if (!!selectedCategoryId && categoryQuery.data) {
-      form.reset(categoryQuery.data);
+      form.reset(categoryQuery.data);                                        // Se resetea el formulario con los datos de la categoría seleccionada
     }
   }, [categoryQuery.data, form, selectedCategoryId]);
 
@@ -88,6 +88,7 @@ export const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => 
             <Plus />
           </Button>
         ) : (
+          // Cuando se crea una categoría el formulario se inicializa con los valores por defecto {name: "", action: "create"} -> en onSubmit el campo action tiene el valor create
           <Button>
             <Plus className="mr-2" />
             New Category
