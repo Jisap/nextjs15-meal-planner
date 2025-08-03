@@ -87,10 +87,7 @@ const getFoods = async (
       orderBy: { [sortBy]: sortOrder },
       skip,
       take: pageSize,
-      include: { 
-        foodServingUnits: true,
-        category: true 
-      },
+      include: { foodServingUnits: true },
     }),
   ]);
 
@@ -115,7 +112,7 @@ const getFood = async (id: number): Promise<FoodSchema | null> => {
   if (!res) return null;
 
   return {
-    action: "update" as const,
+    action: "update" as const, // El propósito de la acción es obtener los datos de un alimento existente de la base de datos para poder editarlo.
     id,
     name: toStringSafe(res.name),
     calories: toStringSafe(res.calories),
