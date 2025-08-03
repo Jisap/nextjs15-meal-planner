@@ -28,7 +28,7 @@ export const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => 
   });
 
   
-  const {                                                                    // Estado de CategoriesStore
+  const {                                                                    // Estado de CategoriesStore: id, dialogOpen y funciones que lo modifican
     selectedCategoryId,
     categoryDialogOpen,
     updateCategoryDialogOpen,
@@ -47,7 +47,7 @@ export const CategoryFormDialog = ({ smallTrigger }:CategoryFormDialogProps) => 
   
   useEffect(() => {                                                          // Si se selecciona una categoría y se carga la query de categorías -> resetea el form
     if (!!selectedCategoryId && categoryQuery.data) {
-      form.reset(categoryQuery.data);                                        // Se resetea el formulario con los datos de la categoría seleccionada
+      form.reset(categoryQuery.data);                                        // y se carga el formulario con los datos de la categoría seleccionada
     }
   }, [categoryQuery.data, form, selectedCategoryId]);
 

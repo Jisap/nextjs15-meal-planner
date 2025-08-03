@@ -49,7 +49,10 @@ const CategoryCards = () => {
                   variant="ghost" 
                   size="icon" 
                   onClick={() => {
-                    updateSelectedCategoryId(item.id);  // Establece el ID de la categoría seleccionada -> useCategory(selectedCategoryId) se activa  -> getCategory -> establece action="update". Ademas en CategoryFormDialog acticva el useEffect para cargar el valor existente de la categoría
+                    // Al hacer clic, se inicia el flujo de edición:
+                    // 1º Establece el ID de la categoría seleccionada en el store 
+                    // 2º  useCategory() de <categoryForm> se activa  -> getCategory -> establece action="update" -> CategoryFormDialog activa el useEffect para cargar el valor existente de la categoría
+                    updateSelectedCategoryId(item.id);  
                     updateCategoryDialogOpen(true);     // Abre el dialogo de edición de categoría <CategoryFormDialog /> -> permite cambiar el nombre de la categoría
                   }}
                 >
