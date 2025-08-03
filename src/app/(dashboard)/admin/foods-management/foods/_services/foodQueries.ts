@@ -11,7 +11,7 @@ import { PaginatedResult } from "@/lib/types/paginatedResults";
 import { toStringSafe } from "@/lib/utils";
 
 
-type FoodWithServingUnits = Prisma.FoodGetPayload<{
+type FoodWithServingUnits = Prisma.FoodGetPayload<{ // Representa todos los campos de la tabla food y ademas la relación con foodServingUnits[{}]
   include: {
     foodServingUnits: true;
   };
@@ -87,7 +87,10 @@ const getFoods = async (
       orderBy: { [sortBy]: sortOrder },
       skip,
       take: pageSize,
-      include: { foodServingUnits: true },
+      include: { 
+        foodServingUnits: true,
+        category: true 
+      },
     }),
   ]);
 
