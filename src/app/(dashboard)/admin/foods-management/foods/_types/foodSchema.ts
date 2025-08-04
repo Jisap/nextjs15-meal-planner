@@ -1,7 +1,6 @@
 
 import { patterns } from "@/lib/constant";
 import { regexSchema, requiredStringSchema } from "@/lib/zod-schemas";
-
 import { z } from "zod";
 
 const foodSchema = z.intersection(
@@ -29,7 +28,7 @@ const foodSchema = z.intersection(
 
 type FoodSchema = z.infer<typeof foodSchema>;
 
-const foodDefaultValues: FoodSchema = {
+const foodDefaultValues: z.input<typeof foodSchema> = {
   action: "create",
   foodServingUnits: [],
   name: "",

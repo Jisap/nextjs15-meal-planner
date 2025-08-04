@@ -1,4 +1,4 @@
-// d:\React-Utilidades\next15-meal-planner\src\lib\constant.ts
+
 const patterns = {
   // Valida un número entre 0 y 9999, permitiendo hasta dos decimales.
   // También permite que el campo esté vacío.

@@ -15,7 +15,7 @@ type SelectProps<T extends FieldValues> = {
   clearable?: boolean;
 };
 
-const ControlledSelect = <T extends FieldValues>({
+export const ControlledSelect = <T extends FieldValues>({
   name,
   label,
   options = [],

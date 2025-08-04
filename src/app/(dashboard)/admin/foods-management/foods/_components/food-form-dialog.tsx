@@ -1,0 +1,198 @@
+"use client"
+
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
+import { 
+  foodDefaultValues, 
+  foodSchema, 
+  FoodSchema 
+} from "../_types/foodSchema";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFood } from "../_services/use-food-queries";
+import { useCategories } from "../../categories/_services/use-category-queries";
+import { useCreateFood, useUpdateFood } from "../_services/use-food-mutations";
+import { useFoodsStore } from "../_libs/use-food-store";
+import { useCategoriesStore } from "../../categories/_libs/useCategoriesStore";
+import { useServingUnitsStore } from "../../serving-units/_libs/useServingUnitsStore";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ControlledInput } from "@/components/ui/controlled/controlled-input";
+import { CategoryFormDialog } from "../../categories/_components/category-form-dialog";
+import { ControlledSelect } from "@/components/ui/controlled/controlled-select";
+import { SpecifyFoodServingUnits } from "../../categories/_components/specify-food-serving-units";
+import { z } from "zod";
+
+
+
+
+export const FoodFormDialog = () => {
+  
+  const form = useForm<z.input<typeof foodSchema>>({ // Le decimos a react-hook-form que acepte valores del esquema de zod (string, number, boolean o unknow)
+    defaultValues: foodDefaultValues,                // Los valores por defecto 
+    resolver: zodResolver(foodSchema) ,              // Resolver recibe los datos y los valida contra foodSchema -> si todo es correcto los transforma a tipo de salida  
+  });
+
+  const foodQuery = useFood();                       // Query para obtener los datos de food
+  const categoriesQuery = useCategories();           // Query para obtener los datos de categories
+
+  const createFoodMutation = useCreateFood();        // Mutation para crear food
+  const updateFoodMutation = useUpdateFood();        // Mutation para actualizar food
+
+  const isPending =
+    createFoodMutation.isPending || updateFoodMutation.isPending; // Si hay alguno de los dos mutation pendientes isPending es true
+  
+  const {
+    selectedFoodId,
+    updateSelectedFoodId,
+    foodDialogOpen,
+    updateFoodDialogOpen,
+  } = useFoodsStore();                                            // Store para manejar los datos de food
+
+  const { categoryDialogOpen } = useCategoriesStore();            // Store para manejar los datos de categories
+  const { servingUnitDialogOpen } = useServingUnitsStore();       // Store para manejar los datos de servingUnits
+
+  useEffect(() => {
+    if (!!selectedFoodId && foodQuery.data) {  // 
+      form.reset(foodQuery.data);
+    }
+  }, [foodQuery.data, form, selectedFoodId]);
+
+  const handleDialogOpenChange = (open: boolean) => {
+    updateFoodDialogOpen(open);
+
+    if (!open) {
+      updateSelectedFoodId(null);
+      form.reset(foodDefaultValues);
+    }
+  };
+
+  const handleSuccess = () => {
+    handleDialogOpenChange(false);
+  };
+
+  const disabledSubmit = servingUnitDialogOpen || categoryDialogOpen;
+
+  const onSubmit: SubmitHandler<FoodSchema> = (data) => {
+    if (data.action === "create") {
+      createFoodMutation.mutate(data, {
+        onSuccess: handleSuccess,
+      });
+    } else {
+      updateFoodMutation.mutate(data, { onSuccess: handleSuccess });
+    }
+  };
+
+  return (
+    <Dialog 
+      open={foodDialogOpen} 
+      onOpenChange={handleDialogOpenChange}
+    >
+      <DialogTrigger asChild>
+        <Button>
+          <Plus className="mr-2" />
+          New Food
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="text-2xl">
+            {selectedFoodId ? "Edit Food" : "Create a New Food"}
+          </DialogTitle>
+        </DialogHeader>
+        <form
+          onSubmit={disabledSubmit ? undefined : form.handleSubmit(onSubmit as any)} // 
+          className="space-y-6"
+        >
+          <FormProvider {...form}>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-1 grid">
+                <ControlledInput<FoodSchema>
+                  name="name"
+                  label="Name"
+                  placeholder="Enter food name"
+                />
+              </div>
+
+              <div className="col-span-1 flex items-end">
+                <ControlledSelect<FoodSchema>
+                  label="Category"
+                  name="categoryId"
+                  options={categoriesQuery.data?.map((item) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                />
+                <CategoryFormDialog smallTrigger />
+              </div>
+
+              <div>
+                <ControlledInput<FoodSchema>
+                  name="calories"
+                  label="Calories"
+                  type="number"
+                  placeholder="kcal"
+                />
+              </div>
+              <div>
+                <ControlledInput<FoodSchema>
+                  name="protein"
+                  label="Protein"
+                  type="number"
+                  placeholder="grams"
+                />
+              </div>
+              <div>
+                <ControlledInput<FoodSchema>
+                  name="carbohydrates"
+                  label="Carbohydrates"
+                  type="number"
+                  placeholder="grams"
+                />
+              </div>
+              <div>
+                <ControlledInput<FoodSchema>
+                  name="fat"
+                  label="Fat"
+                  type="number"
+                  placeholder="grams"
+                />
+              </div>
+              <div>
+                <ControlledInput<FoodSchema>
+                  name="fiber"
+                  label="Fiber"
+                  type="number"
+                  placeholder="grams"
+                />
+              </div>
+              <div>
+                <ControlledInput<FoodSchema>
+                  name="sugar"
+                  label="Sugar"
+                  type="number"
+                  placeholder="grams"
+                />
+              </div>
+              <div className="col-span-2">
+                <SpecifyFoodServingUnits />
+              </div>
+            </div>
+          </FormProvider>
+          <DialogFooter>
+            <Button type="submit" isLoading={isPending}>
+              {!!selectedFoodId ? "Edit" : "Create"} Food
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
