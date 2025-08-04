@@ -189,9 +189,11 @@ export const FoodFormDialog = () => {
                   placeholder="grams"
                 />
               </div>
+
               <div className="col-span-2">
                 <SpecifyFoodServingUnits />
               </div>
+              
             </div>
           </FormProvider>
           <DialogFooter>

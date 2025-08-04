@@ -68,10 +68,11 @@ const SpecifyFoodServingUnits = () => {
               <div className="col-span-1 flex items-end">
                 {/* El 'name' se construye dinámicamente para vincular este input a la posición correcta en el array del formulario. */}
                 {/* Ejemplo: "foodServingUnits.0.foodServingUnitId" */}
+                {/* Menu desplegable para seleccionar una unidad de medida */}
                 <ControlledSelect<z.input<typeof foodSchema>>
                   label="Food Serving Unit"
                   name={`foodServingUnits.${index}.foodServingUnitId`}
-                  options={servingUnitsQuery.data?.map((item) => ({
+                  options={servingUnitsQuery.data?.map((item) => ({ // Transforma los datos de servingUnitsQuery en opciones para el menu desplegable
                     label: item.name,
                     value: item.id,
                   }))}
@@ -81,6 +82,7 @@ const SpecifyFoodServingUnits = () => {
               </div>
 
               <div>
+                {/* Input de texto para definir cuántos gramos pesa la unidad que seleccionaste. */}
                 <ControlledInput<z.input<typeof foodSchema>>
                   name={`foodServingUnits.${index}.grams`}
                   label="Grams per Unit"
@@ -88,6 +90,7 @@ const SpecifyFoodServingUnits = () => {
                   placeholder="0"
                 />
               </div>
+              {/* Botón para eliminar la fila de unidades de medida */}
               <Button
                 size="icon"
                 variant="outline"
