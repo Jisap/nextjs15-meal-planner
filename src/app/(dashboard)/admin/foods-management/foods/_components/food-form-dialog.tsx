@@ -40,53 +40,53 @@ export const FoodFormDialog = () => {
     resolver: zodResolver(foodSchema) ,              // Resolver recibe los datos y los valida contra foodSchema -> si todo es correcto los transforma a tipo de salida  
   });
 
-  const foodQuery = useFood();                       // Query para obtener los datos de food
-  const categoriesQuery = useCategories();           // Query para obtener los datos de categories
+  const foodQuery = useFood();                                        // Query para obtener los datos de food
+  const categoriesQuery = useCategories();                            // Query para obtener los datos de categories
 
-  const createFoodMutation = useCreateFood();        // Mutation para crear food
-  const updateFoodMutation = useUpdateFood();        // Mutation para actualizar food
+  const createFoodMutation = useCreateFood();                         // Mutation para crear food
+  const updateFoodMutation = useUpdateFood();                         // Mutation para actualizar food
 
   const isPending =
-    createFoodMutation.isPending || updateFoodMutation.isPending; // Si hay alguno de los dos mutation pendientes isPending es true
+    createFoodMutation.isPending || updateFoodMutation.isPending;     // Si hay alguno de los dos mutation pendientes isPending es true
   
   const {
     selectedFoodId,
     updateSelectedFoodId,
     foodDialogOpen,
     updateFoodDialogOpen,
-  } = useFoodsStore();                                            // Store para manejar los datos de food
+  } = useFoodsStore();                                                // Store para manejar los datos de food
 
-  const { categoryDialogOpen } = useCategoriesStore();            // Store para manejar los datos de categories
-  const { servingUnitDialogOpen } = useServingUnitsStore();       // Store para manejar los datos de servingUnits
+  const { categoryDialogOpen } = useCategoriesStore();                // Store para manejar los datos de categories
+  const { servingUnitDialogOpen } = useServingUnitsStore();           // Store para manejar los datos de servingUnits
 
-  useEffect(() => {
-    if (!!selectedFoodId && foodQuery.data) {  // 
+  useEffect(() => {                                                   // Si se selecciona un alimento y se carga la query de food -> resetea el form
+    if (!!selectedFoodId && foodQuery.data) {                         // y se carga el formulario con los datos del food
       form.reset(foodQuery.data);
     }
   }, [foodQuery.data, form, selectedFoodId]);
 
-  const handleDialogOpenChange = (open: boolean) => {
-    updateFoodDialogOpen(open);
+  const handleDialogOpenChange = (open: boolean) => {                 // Si se abre o cierra el dialogo -> actualiza el estado de FoodsStore
+    updateFoodDialogOpen(open);                                       // y se actualiza el dialogo de food
 
-    if (!open) {
-      updateSelectedFoodId(null);
-      form.reset(foodDefaultValues);
+    if (!open) {                                                      // Si se cierra el dialogo
+      updateSelectedFoodId(null);                                     // se establece null en el estado de FoodsStore
+      form.reset(foodDefaultValues);                                  // y se resetea el form a los valores por defecto
     }
   };
 
-  const handleSuccess = () => {
+  const handleSuccess = () => {                                       // Si se crea o actualiza un alimento -> se cierra el dialogo
     handleDialogOpenChange(false);
   };
 
-  const disabledSubmit = servingUnitDialogOpen || categoryDialogOpen;
+  const disabledSubmit = servingUnitDialogOpen || categoryDialogOpen; // Si se abre el dialogo de servingUnits o de categories -> se deshabilita el botón de submit
 
-  const onSubmit: SubmitHandler<FoodSchema> = (data) => {
-    if (data.action === "create") {
-      createFoodMutation.mutate(data, {
-        onSuccess: handleSuccess,
+  const onSubmit: SubmitHandler<FoodSchema> = (data) => {             // onSubmit recibe los datos validados del form
+    if (data.action === "create") {                                   // Si se crea un alimento
+      createFoodMutation.mutate(data, {                               // se llama a la mutation de createFoodMutation  
+        onSuccess: handleSuccess,                                     // y si se crea correctamente se cierra el dialogo
       });
     } else {
-      updateFoodMutation.mutate(data, { onSuccess: handleSuccess });
+      updateFoodMutation.mutate(data, { onSuccess: handleSuccess });  // En caso contrario se trataría de una actualización
     }
   };
 
