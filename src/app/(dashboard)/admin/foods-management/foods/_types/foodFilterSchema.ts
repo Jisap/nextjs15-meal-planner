@@ -20,11 +20,17 @@ const foodFiltersSchema = z.object({
     .enum(["name", "calories", "protein", "carbohydrates", "fat"])   // El campo por el cual se ordenará la lista
     .optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),                     // El orden (ascendente o descendente).    
-  page: z.number(),                                                  // El número de la página actual para la paginación.
-  pageSize: z.number().max(100),                                     // El número de elementos a mostrar por página.
+  page: z.coerce.number(),                                           // El número de la página actual para la paginación.
+  pageSize: z.coerce.number().max(100),                              // El número de elementos a mostrar por página.
 });
 
+// El tipo `FoodFiltersSchema` representa la forma de los datos DESPUÉS de la validación y coerción de Zod.
+// Es el tipo que recibirás en el `onSubmit` del formulario.
 type FoodFiltersSchema = z.infer<typeof foodFiltersSchema>;
+
+// El tipo `FoodFiltersInput` representa la forma de los datos ANTES de la validación.
+// Es el tipo que `react-hook-form` maneja internamente y es ideal para los `defaultValues`.
+type FoodFiltersInput = z.input<typeof foodFiltersSchema>;
 
 const foodFiltersDefaultValues: FoodFiltersSchema = {
   searchTerm: "",
@@ -37,4 +43,9 @@ const foodFiltersDefaultValues: FoodFiltersSchema = {
   page: 1,
 };
 
-export { foodFiltersSchema, type FoodFiltersSchema, foodFiltersDefaultValues };
+export {
+  foodFiltersSchema,
+  type FoodFiltersSchema,
+  type FoodFiltersInput,
+  foodFiltersDefaultValues,
+};
