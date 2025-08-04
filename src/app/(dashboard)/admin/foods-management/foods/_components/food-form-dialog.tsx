@@ -96,11 +96,13 @@ export const FoodFormDialog = () => {
       onOpenChange={handleDialogOpenChange}
     >
       <DialogTrigger asChild>
+        {/* Cuando se crea un alimento en el formulario se inicializa con los valores por defecto {name: "", action: "create"} -> en onSubmit el campo action tiene el valor create */}
         <Button>
           <Plus className="mr-2" />
           New Food
         </Button>
       </DialogTrigger>
+
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-2xl">
@@ -111,6 +113,12 @@ export const FoodFormDialog = () => {
           onSubmit={disabledSubmit ? undefined : form.handleSubmit(onSubmit as any)} // 
           className="space-y-6"
         >
+          {/* 
+            Se usa el FormProvider para pasar implícitamente todos 
+            los métodos (handleSubmit y control) 
+            y el estado del formulario (values, errors, isDirty, touchedFields)
+            a componentes anidados, como el <ControlledInput />
+          */}
           <FormProvider {...form}>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-1 grid">
