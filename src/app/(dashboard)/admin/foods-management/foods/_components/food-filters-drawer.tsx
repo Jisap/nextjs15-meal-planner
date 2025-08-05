@@ -87,7 +87,8 @@ export const FoodFiltersDrawer = () => {
           También se pasa el tipo de los datos de la validación de zod -> por eso no es necesario especificar el tipo de data en cada controller
       */}
       <FormProvider {...form}>
-        <div className="flex gap-2">
+        {/* El buscador rápido y el botón para abrir el Drawer se quedan fuera del formulario */}
+        <div className="flex items-start gap-2">
           <ControlledInput
             containerClassName="max-w-48"
             name="searchTerm"
@@ -101,65 +102,72 @@ export const FoodFiltersDrawer = () => {
           </DrawerTrigger>
         </div>
 
-        <form onSubmit={form.handleSubmit(onSubmit as any)}>
-          <DrawerContent>
-            <DrawerHeader className="text-left">
-              <DrawerTitle>Filters</DrawerTitle>
-              <DrawerDescription>
-                Customize your food search criteria
-              </DrawerDescription>
-            </DrawerHeader>
+        {/* El contenido del Drawer, que incluye el formulario */}
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Filters</DrawerTitle>
+            <DrawerDescription>
+              Customize your food search criteria
+            </DrawerDescription>
+          </DrawerHeader>
 
-            <div className="space-y-2 p-4">
-              <div className="flex flex-wrap gap-2">
-                <ControlledSelect
-                  label="Category"
-                  name="categoryId"
-                  clearable
-                  options={categoriesQuery.data?.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                  }))}
-                />
+          {/* La etiqueta <form> ahora envuelve los filtros y el footer */}
+          <form
+            onSubmit={form.handleSubmit(onSubmit as any)}
+            className="flex h-full flex-col"
+          >
+            <div className="flex-grow space-y-2 overflow-y-auto p-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-wrap gap-2">
+                  <ControlledSelect
+                    label="Category"
+                    name="categoryId"
+                    clearable
+                    options={categoriesQuery.data?.map((item) => ({
+                      value: item.id,
+                      label: item.name,
+                    }))}
+                  />
 
-                <ControlledSelect
-                  label="Sort By"
-                  name="sortBy"
-                  options={[
-                    { label: "Name", value: "name" },
-                    { label: "Calories", value: "calories" },
-                    { label: "Carbohydrates", value: "carbohydrates" },
-                    { label: "Fat", value: "fat" },
-                    { label: "Protein", value: "protein" },
-                  ]}
-                />
+                  <ControlledSelect
+                    label="Sort By"
+                    name="sortBy"
+                    options={[
+                      { label: "Name", value: "name" },
+                      { label: "Calories", value: "calories" },
+                      { label: "Carbohydrates", value: "carbohydrates" },
+                      { label: "Fat", value: "fat" },
+                      { label: "Protein", value: "protein" },
+                    ]}
+                  />
 
-                <ControlledSelect
-                  label="Sort Order"
-                  name="sortOrder"
-                  options={[
-                    { label: "Ascending", value: "asc" },
-                    { label: "Descending", value: "desc" },
-                  ]}
-                />
-              </div>
+                  <ControlledSelect
+                    label="Sort Order"
+                    name="sortOrder"
+                    options={[
+                      { label: "Ascending", value: "asc" },
+                      { label: "Descending", value: "desc" },
+                    ]}
+                  />
+                </div>
 
-              <div className="flex flex-wrap gap-2">
-                <ControlledSlider
-                  name="caloriesRange"
-                  label="Calories"
-                  min={0}
-                  max={9999}
-                />
-                <ControlledSlider
-                  name="proteinRange"
-                  label="Protein"
-                  min={0}
-                  max={9999}
-                />
+                <div className="flex flex-wrap gap-2">
+                  <ControlledSlider
+                    name="caloriesRange"
+                    label="Calories"
+                    min={0}
+                    max={9999}
+                  />
+                  <ControlledSlider
+                    name="proteinRange"
+                    label="Protein"
+                    min={0}
+                    max={9999}
+                  />
+                </div>
               </div>
             </div>
-            
+
             <DrawerFooter className="pt-2">
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>
@@ -173,12 +181,10 @@ export const FoodFiltersDrawer = () => {
               >
                 Reset
               </Button>
-              <Button type="submit">
-                Apply Filters
-              </Button>
+              <Button type="submit">Apply Filters</Button>
             </DrawerFooter>
-          </DrawerContent>
-        </form>
+          </form>
+        </DrawerContent>
       </FormProvider>
     </Drawer>
   )
