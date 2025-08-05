@@ -1,5 +1,6 @@
 "use client"
 
+
 import {
   Dialog,
   DialogContent,
@@ -29,6 +30,7 @@ import { CategoryFormDialog } from "../../categories/_components/category-form-d
 import { ControlledSelect } from "@/components/ui/controlled/controlled-select";
 import { SpecifyFoodServingUnits } from "../../categories/_components/specify-food-serving-units";
 import { z } from "zod";
+
 
 
 
@@ -118,10 +120,15 @@ export const FoodFormDialog = () => {
             los métodos (handleSubmit y control) 
             y el estado del formulario (values, errors, isDirty, touchedFields)
             a componentes anidados, como el <ControlledInput />
+            También se pasa el tipo de los datos de la validación de zod (FoodSchema)
           */}
           <FormProvider {...form}>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-1 grid">
+                {/* Al escribir <ControlledInput<FoodSchema>>, le estás diciendo al componente genérico ControlledInput que,
+                 para esta instancia, su tipo genérico T debe ser FoodSchema. Esto le da al componente todo el contexto 
+                 que necesita para validar que name="name" es una clave válida de FoodSchema 
+                */}
                 <ControlledInput<FoodSchema>
                   name="name"
                   label="Name"

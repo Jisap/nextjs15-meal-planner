@@ -20,26 +20,28 @@ const foodFiltersSchema = z.object({
     .enum(["name", "calories", "protein", "carbohydrates", "fat"])   // El campo por el cual se ordenará la lista
     .optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),                     // El orden (ascendente o descendente).    
-  page: z.coerce.number(),                                           // El número de la página actual para la paginación.
-  pageSize: z.coerce.number().max(100),                              // El número de elementos a mostrar por página.
+  page: z.coerce.number(),                                           // El número de la página actual para la paginación. Tipo number gracias a coerce
+  pageSize: z.coerce.number().max(100),                              // El número de elementos a mostrar por página. Tipo number gracias a coerce
 });
 
-// El tipo `FoodFiltersSchema` representa la forma de los datos DESPUÉS de la validación y coerción de Zod.
+// El tipo `FoodFiltersSchema` representa la forma de los datos DESPUÉS (z.infer) de la validación y coerción de Zod.
 // Es el tipo que recibirás en el `onSubmit` del formulario.
+// Es el tipo para el "viaje" del formulario (valores por defecto, estado interno, componentes controlados)
 type FoodFiltersSchema = z.infer<typeof foodFiltersSchema>;
 
-// El tipo `FoodFiltersInput` representa la forma de los datos ANTES de la validación.
+// El tipo `FoodFiltersInput` representa la forma de los datos ANTES (z.input) de la validación.
 // Es el tipo que `react-hook-form` maneja internamente y es ideal para los `defaultValues`.
+// Es el tipo para el "viaje" del formulario (valores por defecto, estado interno, componentes controlados)
 type FoodFiltersInput = z.input<typeof foodFiltersSchema>;
 
-const foodFiltersDefaultValues: FoodFiltersSchema = {
+const foodFiltersDefaultValues: FoodFiltersInput = {
   searchTerm: "",
   caloriesRange: ["0", "9999"],
   proteinRange: ["0", "9999"],
   categoryId: "",
   sortBy: "name",
   sortOrder: "desc",
-  pageSize: 12,
+  pageSize: 12, // el tipo de entrada puede ser cualquier tipo que zod pueda forzar a ser número
   page: 1,
 };
 

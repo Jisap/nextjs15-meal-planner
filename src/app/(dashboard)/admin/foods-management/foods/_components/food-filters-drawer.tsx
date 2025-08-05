@@ -55,8 +55,8 @@ export const FoodFiltersDrawer = () => {
   const searchTerm = useWatch({ control: form.control, name: "searchTerm" });      // Obtener el valor del campo de búsqueda.
   const debouncedSearchTerm = useDebounce(searchTerm, 400);                        // Debounce el valor para evitar operaciones costosas.
 
-  useEffect(() => {                                                                // Si se cambia el término de búsqueda, se actualiza el estado de Store.
-    updateFoodFiltersSearchTerm(debouncedSearchTerm);
+  useEffect(() => {                                                                // Si se cambia el término de búsqueda, 
+    updateFoodFiltersSearchTerm(debouncedSearchTerm);                              // se actualiza su estado en el Store.
   }, [debouncedSearchTerm, updateFoodFiltersSearchTerm]);
 
   const categoriesQuery = useCategories();                                         // Query para obtener los datos de categorías.
@@ -67,7 +67,7 @@ export const FoodFiltersDrawer = () => {
     }
   }, [foodFilters, foodFiltersDrawerOpen, form]);
 
-  const onSubmit: SubmitHandler<FoodFiltersSchema> = (data) => {
+  const onSubmit: SubmitHandler<FoodFiltersSchema> = (data) => {                  
     updateFoodFilters(data);
     updateFoodFiltersDrawerOpen(false);
   };
@@ -79,6 +79,13 @@ export const FoodFiltersDrawer = () => {
       direction = "right"
       handleOnly
     >
+      {/* 
+          Este componente de react-hook-form pasa implícitamente todos
+          los métodos (handleSubmit y control)
+          y el estado del formulario (values, errors, isDirty, touchedFields)
+          a componentes anidados, como el <ControlledInput />
+          También se pasa el tipo de los datos de la validación de zod -> por eso no es necesario especificar el tipo de data en cada controller
+      */}
       <FormProvider {...form}>
         <div className="flex gap-2">
           <ControlledInput
@@ -93,7 +100,8 @@ export const FoodFiltersDrawer = () => {
             </Button>
           </DrawerTrigger>
         </div>
-        <form>
+
+        <form onSubmit={form.handleSubmit(onSubmit as any)}>
           <DrawerContent>
             <DrawerHeader className="text-left">
               <DrawerTitle>Filters</DrawerTitle>
@@ -151,6 +159,7 @@ export const FoodFiltersDrawer = () => {
                 />
               </div>
             </div>
+            
             <DrawerFooter className="pt-2">
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>
@@ -164,7 +173,7 @@ export const FoodFiltersDrawer = () => {
               >
                 Reset
               </Button>
-              <Button type="submit" onClick={form.handleSubmit(onSubmit as any)}>
+              <Button type="submit">
                 Apply Filters
               </Button>
             </DrawerFooter>
