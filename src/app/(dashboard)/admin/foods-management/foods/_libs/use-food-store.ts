@@ -1,13 +1,14 @@
 import {
   foodFiltersDefaultValues,
   FoodFiltersSchema,
+  foodFiltersSchema,
 } from "@/app/(dashboard)/admin/foods-management/foods/_types/foodFilterSchema";
 import { createStore } from "@/lib/createStore";
 
 type State = {
   selectedFoodId: number | null;      // Guarda el ID del alimento seleccionado para editar. Es `null` si se está creando uno nuevo.
   foodDialogOpen: boolean;            // Controla si el diálogo (modal) para crear/editar alimentos está abierto o cerrado.
-  foodFilters: FoodFiltersSchema;     // Almacena el objeto completo con todos los filtros de búsqueda (término, rangos, paginación, etc.).
+  foodFilters: FoodFiltersSchema;     // Almacena el objeto completo con todos los filtros de búsqueda (término, rangos, paginación, etc.). Los datos aquí ya estan validados por zod. 
   foodFiltersDrawerOpen: boolean;     // Controla si el panel o "cajón" de filtros está visible.
 };
 
@@ -38,7 +39,7 @@ const useFoodsStore = createStore<Store>(         // Crea un hook de almacenamie
       set((state) => {
         state.foodDialogOpen = is;
       }),
-    foodFilters: foodFiltersDefaultValues,        // Inicializa los filtros de búsqueda con los valores por defecto.
+    foodFilters: foodFiltersSchema.parse(foodFiltersDefaultValues), // Inicializa los filtros con valores por defecto YA VALIDADOS.
     updateFoodFilters: (filters) =>               // Actualiza los filtros de búsqueda.
       set((state) => {
         state.foodFilters = filters;
