@@ -11,16 +11,17 @@ import { hashPassword } from "@/lib/utils";
 const signUp = async (data: SignUpSchema) => {
   await executeAction({
     actionFn: async () => {
-      const validatedData = signUpSchema.parse(data);
-      const hashedPassword = await hashPassword(validatedData.password);
+      const validatedData = signUpSchema.parse(data);                       // Valida el esquema
+      const hashedPassword = await hashPassword(validatedData.password);    // Hashea la contraseña
 
-      await db.user.create({
+      await db.user.create({                                                // Crea el usuario en bd
         data: {
           name: validatedData.name,
           email: validatedData.email,
           password: hashedPassword,
         },
       });
+
     },
   });
 };
