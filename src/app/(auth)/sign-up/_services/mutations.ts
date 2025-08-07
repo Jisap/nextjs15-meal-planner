@@ -11,7 +11,7 @@ import { hashPassword } from "@/lib/utils";
 const signUp = async (data: SignUpSchema) => {
   await executeAction({
     actionFn: async () => {
-      const validatedData = signUpSchema.parse(data);                       // Valida el esquema
+      const validatedData = signUpSchema.parse(data);                       // Valida los datos con signUpSchema
       const hashedPassword = await hashPassword(validatedData.password);    // Hashea la contraseña
 
       await db.user.create({                                                // Crea el usuario en bd

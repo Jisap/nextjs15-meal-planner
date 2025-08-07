@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const useSignUp = () => {
+  
   const router = useRouter();
 
   return useMutation({

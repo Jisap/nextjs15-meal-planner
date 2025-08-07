@@ -13,9 +13,9 @@ const signUpSchema = z
     path: ["confirmPassword"],                                // Si hay un error debe asociarse al campo confirmPassword
   });
 
-type SignUpSchema = z.infer<typeof signUpSchema>;
+type SignUpSchema = z.infer<typeof signUpSchema>; // Valores con un tipo inferido del schema de validación
 
-const signUpDefaultValues: SignUpSchema = {
+const signUpDefaultValues: SignUpSchema = {       // Valores por defecto
   name: "",
   email: "",
   password: "",
