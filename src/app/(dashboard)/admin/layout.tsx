@@ -1,56 +1,19 @@
-"use client";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Apple, Boxes, Ruler } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Role } from "$/generated/prisma";
+import { auth } from "@/lib/auth";
+
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 type LayoutProps = { children: ReactNode };
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = async ({ children }: LayoutProps) => {
+
+  const session = await auth();
+
+  if (!session) redirect("/sign-in");
+  if (session.user?.role === Role.USER) redirect("/client");
   
-  const pathname = usePathname();
-
-  // Obtenemos el valor predeterminado del tab de la página actual en base al pathname
-  const getDefaultTab = () => {
-    if (pathname.includes("/admin/foods-management/categories"))
-      return "categories";
-    if (pathname.includes("/admin/foods-management/serving-units"))
-      return "serving-units";
-    return "foods";
-  };
-
-  return (
-    <div className="mx-auto max-w-7xl p-6">
-      <div className="mb-6">
-        <Tabs value={getDefaultTab()}>
-          <TabsList>
-            <TabsTrigger value="foods" asChild>
-              <Link href="/admin/foods-management/foods">
-                <Apple />
-                Foods
-              </Link>
-            </TabsTrigger>
-
-            <TabsTrigger value="categories" asChild>
-              <Link href="/admin/foods-management/categories">
-                <Boxes />
-                Categories
-              </Link>
-            </TabsTrigger>
-
-            <TabsTrigger value="serving-units" asChild>
-              <Link href="/admin/foods-management/serving-units">
-                <Ruler />
-                Serving Units
-              </Link>
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-      {children}
-    </div>
-  );
+  return <div className="mx-auto max-w-7xl p-6">{children}</div>;
 };
 
 export default Layout;
