@@ -21,9 +21,9 @@ const mealSchema = z.intersection(
   ]),
 );
 
-type MealSchema = z.infer<typeof mealSchema>;
+type MealSchema = z.infer<typeof mealSchema>; // Tipo de salida: Tipo de dato que obtienes después de que Zod ha validado y transformado (coercido) los datos.
 
-const mealDefaultValues: MealSchema = {
+const mealDefaultValues: z.input<typeof mealSchema> = {
   action: "create",
   dateTime: new Date(),
   mealFoods: [],
