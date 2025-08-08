@@ -8,7 +8,7 @@ import {
 import { auth } from "@/lib/auth";
 import db from "@/lib/db";
 import { toStringSafe } from "@/lib/utils";
-import { MealSchema } from "../_types/melaSchema";
+import { MealSchema } from "../_types/mealSchema";
 
 
 const getMeals = async (filters: MealFiltersSchema) => {                // Obtiene el plan de comida según fecha de creación 
