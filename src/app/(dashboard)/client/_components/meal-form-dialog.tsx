@@ -112,7 +112,10 @@ const MealFormDialog = ({ smallTrigger, session }: MealFormDialogProps) => {
     createMealMutation.isPending || updateMealMutation.isPending;
 
   return (
-    <Dialog open={mealDialogOpen} onOpenChange={handleDialogOpenChange}>
+    <Dialog 
+      open={mealDialogOpen} 
+      onOpenChange={handleDialogOpenChange}
+    >
       <DialogTrigger asChild>
         {smallTrigger ? (
           // Renderiza un botón pequeño si `smallTrigger` es true.

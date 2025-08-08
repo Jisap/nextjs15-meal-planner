@@ -45,47 +45,55 @@ type NutritionTotals = {
 };
 
 const MealCards = () => {
+
   const { updateSelectedMealId, updateMealDialogOpen, mealFilters } = useMealsStore();
 
-  const mealsQuery = useMeals();
+  const mealsQuery = useMeals();                                               // Lista de comidas
 
   const deleteMealMutation = useDeleteMeal();
 
-  const calculateTotalCalories = (
-    mealFoods: MealWithFoods["mealFoods"],
+  const calculateTotalCalories = (                                             // Recibe los alimentos de UNA comida y devuelve el total de calorías.          
+    mealFoods: MealWithFoods["mealFoods"],                                     // Recibe un array de mealFoods.
   ): number => {
-    // Se tipan explícitamente los parámetros del callback de `reduce` para evitar errores de `any` implícito.
-    return mealFoods.reduce((total: number, mealFood: MealWithFoods["mealFoods"][number]) => {
-      const foodCalories = (mealFood.food.calories ?? 0) * mealFood.amount;
-      return total + foodCalories;
-    }, 0); // El valor inicial `0` establece el tipo de `total` como `number`.
+    return mealFoods.reduce(
+      (total: number, mealFood: MealWithFoods["mealFoods"][number]) => {       // Usa la función reduce para recorrer cada mealFood en el array.     
+        const foodCalories = (mealFood.food.calories ?? 0) * mealFood.amount;  // Para cada alimento, multiplica las calorías del alimento por la cantidad consumida
+        return total + foodCalories;                                           // Suma este resultado a un acumulador (total).
+    }, 0);                                                                     // El valor inicial `0` establece el tipo de `total` como `number`.
   };
 
-  const calculateNutritionTotals = (
-    meals: MealWithFoods[] | undefined,
+  const calculateNutritionTotals = (                                           // Calcula los totales nutricionales agregados (calorías, proteínas, carbohidratos, etc.) para un conjunto completo de comidas (meals).                                  
+    meals: MealWithFoods[] | undefined,                                        // Opera sobre todas las comidas que se están mostrando.
   ): NutritionTotals => {
-    const initialTotals: NutritionTotals = {
-      calories: 0, protein: 0, carbs: 0, fat: 0, sugar: 0, fiber: 0,
+    
+    const initialTotals: NutritionTotals = {                                   // Define un objeto initialTotals con todos los valores nutricionales en 0. 
+      calories: 0,
+      protein: 0, 
+      carbs: 0, 
+      fat: 0, 
+      sugar: 0, 
+      fiber: 0,           
     };
 
-    if (!meals) return initialTotals;
+    if (!meals) return initialTotals;                                          // Si no hay comidas, devuelve este objeto.
 
-    // Se tipan explícitamente los parámetros de `reduce` y `forEach` para un código más robusto.
-    return meals.reduce((totals: NutritionTotals, meal: MealWithFoods) => {
-      meal.mealFoods.forEach((mealFood: MealWithFoods["mealFoods"][number]) => {
-        const multiplier = mealFood.amount ?? 1;
-        totals.calories += (mealFood.food.calories ?? 0) * multiplier;
-        totals.protein += (mealFood.food.protein ?? 0) * multiplier;
-        totals.carbs += (mealFood.food.carbohydrates ?? 0) * multiplier;
-        totals.fat += (mealFood.food.fat ?? 0) * multiplier;
-        totals.sugar += (mealFood.food.sugar ?? 0) * multiplier;
-        totals.fiber += (mealFood.food.fiber ?? 0) * multiplier;
-      });
-      return totals;
+    
+    return meals.reduce((totals: NutritionTotals, meal: MealWithFoods) => {    // Usa reduce para recorrer cada meal en el array.
+      meal.mealFoods.forEach(                                                  // Dentro de cada meal, usa forEach para recorrer cada mealFood.
+        (mealFood: MealWithFoods["mealFoods"][number]) => {
+          const multiplier = mealFood.amount ?? 1;                             // Calcula los nutrientes para ese alimento (ej: proteínas del alimento * cantidad) 
+          totals.calories += (mealFood.food.calories ?? 0) * multiplier;       // y los suma a las propiedades correspondientes del objeto acumulador totals.
+          totals.protein += (mealFood.food.protein ?? 0) * multiplier;         
+          totals.carbs += (mealFood.food.carbohydrates ?? 0) * multiplier;
+          totals.fat += (mealFood.food.fat ?? 0) * multiplier;
+          totals.sugar += (mealFood.food.sugar ?? 0) * multiplier;
+          totals.fiber += (mealFood.food.fiber ?? 0) * multiplier;
+        });
+      return totals;                                                            // Devuelve un único objeto NutritionTotals con la suma total de todos los macronutrientes y calorías. 
     }, initialTotals);
   };
 
-  const nutritionTotals = calculateNutritionTotals(mealsQuery.data);
+  const nutritionTotals = calculateNutritionTotals(mealsQuery.data);            
 
   const displayDate = mealFilters.dateTime
     ? format(new Date(mealFilters.dateTime), "EEEE, MMMM d, yyyy")
@@ -95,6 +103,7 @@ const MealCards = () => {
     return <MealCardsSkeleton />;
   }
 
+  // Botón para añadir una nueva comida cuando la lista está vacía
   if (mealsQuery.data?.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -103,11 +112,12 @@ const MealCards = () => {
         <p className="text-foreground/60 mt-1 text-sm">
           Try adjusting your filters or add new meals
         </p>
+       
         <Button
           variant="outline"
           className="mt-4"
           onClick={() => {
-            updateMealDialogOpen(true);
+            updateMealDialogOpen(true); 
           }}
         >
           Add new meal
@@ -247,6 +257,8 @@ const MealCards = () => {
                       {totalCalories} kcal
                     </Badge>
                   </div>
+
+                  {/* Botón para editar la comida seleccionada */}
                   <div className="flex gap-1">
                     <Button
                       className="size-8"
