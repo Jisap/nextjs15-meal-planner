@@ -37,17 +37,17 @@ import { SpecifyMealFoods } from "./specify-meal-foods";
 
 // Define las propiedades que el componente MealFormDialog puede recibir.
 type MealFormDialogProps = {
-  smallTrigger?: boolean; // Prop opcional para renderizar un botón de trigger más pequeño.
-  session: Session; // Objeto de sesión del usuario para obtener su ID.
+  smallTrigger?: boolean;                                    // Prop opcional para renderizar un botón de trigger más pequeño.
+  session: Session;                                          // Objeto de sesión del usuario para obtener su ID.
 };
 
 // Componente principal que renderiza un diálogo para crear o editar una comida.
 const MealFormDialog = ({ smallTrigger, session }: MealFormDialogProps) => {
   
   // Inicializa el formulario con react-hook-form.
-  const form = useForm<z.input<typeof mealSchema>>({ // useForm usa el tipo de entrada: Es el tipo de dato que Zod acepta para la validación.
-    defaultValues: mealDefaultValues,                // Los valores por defecto tambien son del tipo de entrada
-    resolver: zodResolver(mealSchema),               // resolver devuelve los datos validados con tipo inferido -> MealSchema
+  const form = useForm<z.input<typeof mealSchema>>({         // useForm usa el tipo de entrada: Es el tipo de dato que Zod acepta para la validación.
+    defaultValues: mealDefaultValues,                        // Los valores por defecto tambien son del tipo de entrada
+    resolver: zodResolver(mealSchema),                       // resolver devuelve los datos validados con tipo inferido -> MealSchema
   });
 
   // Observa cambios en el campo 'userId' del formulario.
@@ -55,10 +55,10 @@ const MealFormDialog = ({ smallTrigger, session }: MealFormDialogProps) => {
 
   // Extrae estados y acciones del store de comidas (Zustand).
   const {
-    selectedMealId,       // ID de la comida seleccionada para editar.
-    updateSelectedMealId, // Función para actualizar el ID de la comida seleccionada.
-    mealDialogOpen,       // Estado booleano que controla si el diálogo está abierto.
-    updateMealDialogOpen, // Función para actualizar el estado de apertura del diálogo.
+    selectedMealId,                                          // ID de la comida seleccionada para editar.
+    updateSelectedMealId,                                    // Función para actualizar el ID de la comida seleccionada.
+    mealDialogOpen,                                          // Estado booleano que controla si el diálogo está abierto.
+    updateMealDialogOpen,                                    // Función para actualizar el estado de apertura del diálogo.
   } = useMealsStore();
 
   // Hooks de React Query para interactuar con la API de comidas.
