@@ -11,7 +11,7 @@ import { toStringSafe } from "@/lib/utils";
 import { MealSchema } from "../_types/mealSchema";
 
 
-const getMeals = async (filters: MealFiltersSchema) => {                // Obtiene el plan de comida según fecha de creación 
+const getMeals = async (filters: MealFiltersSchema) => {                // Obtiene la lista de comidas según fecha de creación concreta 
 
   const validatedFilters = mealFiltersSchema.parse(filters);            // Validamos la fecha de creación
 
