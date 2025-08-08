@@ -4,7 +4,7 @@ const mealFiltersSchema = z.object({
   dateTime: z.coerce.date(),
 });
 
-type MealFiltersSchema = z.infer<typeof mealFiltersSchema>; // Tipo de datos devuelto por la validación de la entrada
+type MealFiltersSchema = z.infer<typeof mealFiltersSchema>; 
 
 const mealFiltersDefaultValues: MealFiltersSchema = {
   dateTime: new Date(),
