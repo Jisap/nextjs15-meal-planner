@@ -1,9 +1,21 @@
-import React from 'react'
+import { MealCards } from "@/app/(dashboard)/client/_components/meal-cards";
+import { MealFilters } from "@/app/(dashboard)/client/_components/MealFilters";
+import { MealFormDialog } from "@/app/(dashboard)/client/_components/meal-form-dialog";
+import { auth } from "@/lib/auth";
 
-const Page = () => {
+const Page = async () => {
+  const session = await auth();
+  if (!session) return null;
+
   return (
-    <div>Page</div>
-  )
-}
+    <>
+      <div className="flex justify-between">
+        <MealFilters />
+        <MealFormDialog session={session} />
+      </div>
+      <MealCards />
+    </>
+  );
+};
 
-export default Page
+export default Page;
